@@ -62,6 +62,16 @@ module Jekyll
               MaRuKu::Globals[:html_png_dir] = @config['maruku']['png_dir']
               MaRuKu::Globals[:html_png_url] = @config['maruku']['png_url']
             end
+            if @config['maruku']['use_mathjax']
+              require 'maruku/ext/math'
+              STDERR.puts "Maruku: Using MathJax extension."
+
+              # Switch off MathML output
+              MaRuKu::Globals[:html_math_output_mathml] = false
+              MaRuKu::Globals[:html_math_output_mathjax] = true
+              MaRuKu::Globals[:html_math_output_span_equation] = true
+              MaRuKu::Globals[:html_math_engine] = 'none'
+            end
           rescue LoadError
             STDERR.puts 'You are missing a library required for Markdown. Please run:'
             STDERR.puts '  $ [sudo] gem install maruku'
