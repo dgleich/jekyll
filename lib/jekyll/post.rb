@@ -12,10 +12,23 @@ module Jekyll
 
     # Post name validator. Post filenames must be like:
     #   2008-11-05-my-awesome-post.textile
+    # but they can have a directory prefix.
+    #
+    # Also, when yaml_posts_only is true, a post will fail
+    # validation without a YAML header
     #
     # Returns <Bool>
-    def self.valid?(name)
-      name =~ MATCHER
+    def self.valid?(name,yaml_posts_only=false)
+      if name =~ MATCHER
+        if yaml_posts_only
+          first3 = File.open(name) { |fd| fd.read(3) }
+          if first3 != "---"
+            return false
+          end
+        end
+        return true
+      end
+      return false
     end
 
     attr_accessor :site

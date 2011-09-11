@@ -23,6 +23,13 @@ class TestPost < Test::Unit::TestCase
 
       assert !Post.valid?("lol2008-09-09-foo-bar.textile")
       assert !Post.valid?("blah")
+      
+      # check posts with/without yaml matter
+      assert Post.valid?(source_dir('_posts','2011-04-12-text-extension.text'),false)
+      assert Post.valid?(source_dir('_posts','2009-06-22-no-yaml.textile'),false)
+
+      assert !Post.valid?(source_dir('_posts','2011-04-12-text-extension.text'),true)
+      assert !Post.valid?(source_dir('_posts','2009-06-22-no-yaml.textile'),true)
     end
 
     context "processing posts" do

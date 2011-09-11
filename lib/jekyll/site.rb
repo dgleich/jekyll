@@ -5,7 +5,8 @@ module Jekyll
   class Site
     attr_accessor :config, :layouts, :posts, :pages, :static_files,
                   :categories, :exclude, :source, :dest, :lsi, :pygments,
-                  :permalink_style, :tags, :time, :future, :safe, :plugins, :limit_posts
+                  :permalink_style, :yaml_posts_only,
+                  :tags, :time, :future, :safe, :plugins, :limit_posts
 
     attr_accessor :converters, :generators
 
@@ -24,6 +25,7 @@ module Jekyll
       self.permalink_style = config['permalink'].to_sym
       self.exclude         = config['exclude'] || []
       self.future          = config['future']
+      self.yaml_posts_only = config['yaml_posts_only']
       self.limit_posts     = config['limit_posts'] || nil
 
       self.reset
@@ -159,7 +161,7 @@ module Jekyll
 
       # first pass processes, but does not yet render post content
       entries.each do |f|
-        if Post.valid?(f)
+        if Post.valid?(File.join(base,f),self.yaml_posts_only)
           post = Post.new(self, self.source, dir, f)
 
           if post.published && (self.future || post.date <= self.time)

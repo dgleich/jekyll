@@ -98,6 +98,10 @@ opts = OptionParser.new do |opts|
   opts.on("--[no-]future", "Render future dated posts") do |future|
     options['future'] = future
   end
+  
+  opts.on("--yaml-posts-only", "Only render posts with YAML headers") do |yamlonly|
+    options['yaml_posts_only'] = yamlonly
+  end
 
   opts.on("--permalink [TYPE]", "Use 'date' (default) for YYYY/MM/DD") do |style|
     options['permalink'] = style unless style.nil?
